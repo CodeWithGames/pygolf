@@ -1,0 +1,27 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.toolbar {
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+}
+
+.console {
+  height: 200px;
+  border: 2px solid black;
+  display: flex;
+}
+
+.output {
+  width: 50%;
+  overflow: scroll;
+  border: 2px solid black;
+}
+
+.errortext {
+  color: red;
+}
