@@ -5,6 +5,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import GolfCourseIcon from '@material-ui/icons/GolfCourse';
 
+import signInWithGoogle from '../util/signInWithGoogle.js';
 import firebase from 'firebase/app';
 
 import styles from '../styles/Header.module.css';
@@ -46,7 +47,10 @@ export default function Header() {
           </IconButton>
         </Tooltip> :
         <Tooltip title="Sign In" arrow>
-          <IconButton className={styles.iconbutton}>
+          <IconButton
+            className={styles.iconbutton}
+            onClick={signInWithGoogle}
+          >
             <GolfCourseIcon />
           </IconButton>
         </Tooltip>
