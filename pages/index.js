@@ -18,7 +18,6 @@ export default function Index() {
       // create user doc
       userRef.set({
         username: uid.slice(0, 16),
-        picture: currentUser.photoURL,
         joined: new Date()
       });
     }
@@ -35,10 +34,7 @@ export default function Index() {
     <div>
       <h1>Pygolf</h1>
       {
-        firebase.auth().currentUser ?
-        <Link href="/challenges">
-          <a>Challenges</a>
-        </Link> :
+        !firebase.auth().currentUser &&
         <button onClick={signInWithGoogle}>Sign in with Google</button>
       }
     </div>
