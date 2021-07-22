@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import AceEditor from 'react-ace';
 
 import 'ace-builds/src-noconflict/mode-python';
+import 'ace-builds/src-noconflict/mode-plain_text';
 import 'ace-builds/src-noconflict/theme-monokai';
 import styles from '../styles/Editor.module.css';
 
@@ -44,14 +45,32 @@ export default function Editor() {
       />
       <div className={styles.console}>
         <div className={styles.output}>
-          {
-            output.error ?
-            <p className={styles.errortext}>{output.text}</p> :
-            <p>{output.text}</p>
-          }
+          <h1>Output</h1>
+          <AceEditor
+            name="output-editor"
+            className={styles.editor}
+            value={output.text}
+            mode="plain_text"
+            theme="monokai"
+            wrapEnabled={true}
+            showPrintMargin={false}
+            highlightActiveLine={false}
+            readOnly={true}
+          />
         </div>
         <div className={styles.output}>
-
+          <h1>Target</h1>
+          <AceEditor
+            name="target-editor"
+            className={styles.editor}
+            value={target}
+            mode="plain_text"
+            theme="monokai"
+            wrapEnabled={true}
+            showPrintMargin={false}
+            highlightActiveLine={false}
+            readOnly={true}
+          />
         </div>
       </div>
     </div>
