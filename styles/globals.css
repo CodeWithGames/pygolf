@@ -18,8 +18,3 @@ a {
 button {
   cursor: pointer;
 }
-
-#ace-editor {
-  min-height: 200px;
-  flex-grow: 1;
-}

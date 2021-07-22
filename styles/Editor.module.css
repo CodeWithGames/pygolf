@@ -1,25 +1,42 @@
 .container {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  min-height: calc(100% - 60px);
+}
+
+.container > div[id="code-editor"] {
+  min-height: 200px;
+  flex-grow: 1;
 }
 
 .toolbar {
   min-height: 60px;
+  height: 60px;
   display: flex;
   align-items: center;
 }
 
 .console {
   height: 200px;
-  border: 2px solid black;
   display: flex;
 }
 
 .output {
   width: 50%;
-  overflow: scroll;
+  overflow: hidden;
   border: 2px solid black;
+  background: #272822;
+}
+
+.output > h1 {
+  text-align: center;
+  margin: 0;
+  padding: 5px;
+  background: #efefef;
+}
+
+.output .editor div[class="ace_cursor"] {
+  display: none!important;
 }
 
 .errortext {
