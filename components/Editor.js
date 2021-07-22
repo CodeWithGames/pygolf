@@ -10,22 +10,23 @@ export default function Editor() {
   const [code, setCode] = useState('');
   const [output, setOutput] = useState({ error: false, text: '' });
 
-  // runs python code at shell endpoint
-  async function run() {
-    // reset output
-    setOutput({ error: false, text: '' });
+  // runs given python code at shell endpoint
+  async function runCode(inCode) {
     // request endpoint
-    const res = await fetch(`/api/shell?code=${encodeURIComponent(code)}`);
+    const res = await fetch(`/api/shell?code=${encodeURIComponent(inCode)}`);
     const data = await res.json();
-    // set output based on response
-    if (data.error) setOutput({
-      error: true,
-      text: data.error.traceback ?? 'unknown error'
-    });
-    else setOutput({
-      error: false,
-      text: data.result ? data.result.join('\n') : ''
-    });
+    // return data based on response
+    const text = data.error ?
+    (data.error.traceback ?? 'unknown error') :
+    (data.result ? data.result.join('\n') : '');
+    return { error: !!data.error, text: text };
+  }
+
+  // runs current code and puts result in output
+  async function run() {
+    setOutput({ error: false, text: '' }); // reset output
+    const out = await runCode(code); // run code
+    setOutput(out); // set output
   }
 
   return (
