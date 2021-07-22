@@ -6,9 +6,12 @@ import 'ace-builds/src-noconflict/mode-plain_text';
 import 'ace-builds/src-noconflict/theme-monokai';
 import styles from '../styles/Editor.module.css';
 
-export default function Editor() {
+export default function Editor(props) {
+  const { title, target } = props.data;
+
   const [code, setCode] = useState('');
   const [output, setOutput] = useState({ error: false, text: '' });
+  const [running, setRunning] = useState(false);
 
   // runs given python code at shell endpoint
   async function runCode(inCode) {
@@ -29,20 +32,41 @@ export default function Editor() {
     setOutput(out); // set output
   }
 
+  // attempts to submit current code
+  async function submit() {
+    setRunning(true);
+    const inCode = code;
+    const out = await runCode(inCode);
+    setOutput(out);
+    // log output
+    if (out.error) console.log(`error: ${out.text}`)
+    else if (out.text !== target) console.log('output did not match target');
+    else {
+      console.log(`passed with ${inCode.length} characters:`);
+      console.log(inCode);
+    }
+    setRunning(false);
+  }
+
   return (
     <div className={styles.container}>
       <div className={styles.toolbar}>
+        <h1>{title}</h1>
         <p>{code.length}</p>
         <button onClick={run}>Run</button>
+        <button onClick={submit}>Submit</button>
       </div>
       <AceEditor
+        name="code-editor"
         value={code}
         onChange={val => setCode(val)}
         mode="python"
         theme="monokai"
         wrapEnabled={true}
         showPrintMargin={false}
+        readOnly={running}
         width="100%"
+        height="auto"
       />
       <div className={styles.console}>
         <div className={styles.output}>
