@@ -4,6 +4,7 @@ import firebase from 'firebase/app';
 
 export default function Create() {
   const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
   const [target, setTarget] = useState('');
 
   function createChallenge() {
@@ -12,6 +13,7 @@ export default function Create() {
     challengesRef.add({
       creator: uid,
       title: title,
+      description: description,
       target: target
     });
   }
@@ -26,6 +28,11 @@ export default function Create() {
         <input
           value={title}
           onChange={e => setTitle(e.target.value)}
+          required
+        />
+        <input
+          value={description}
+          onChange={e => setDescription(e.target.value)}
           required
         />
         <textarea

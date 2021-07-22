@@ -7,7 +7,7 @@ import 'ace-builds/src-noconflict/theme-monokai';
 import styles from '../styles/Editor.module.css';
 
 export default function Editor(props) {
-  const { title, target } = props.data;
+  const { title, description, target } = props.data;
 
   const [code, setCode] = useState('');
   const [output, setOutput] = useState({ error: false, text: '' });
@@ -52,9 +52,12 @@ export default function Editor(props) {
     <div className={styles.container}>
       <div className={styles.toolbar}>
         <h1>{title}</h1>
-        <p>{code.length}</p>
-        <button onClick={run}>Run</button>
-        <button onClick={submit}>Submit</button>
+        <p>{description}</p>
+        <div className={styles.actions}>
+          <button onClick={run}>Run</button>
+          <p>{code.length} characters</p>
+          <button onClick={submit}>Submit</button>
+        </div>
       </div>
       <AceEditor
         name="code-editor"
@@ -81,6 +84,8 @@ export default function Editor(props) {
             showPrintMargin={false}
             highlightActiveLine={false}
             readOnly={true}
+            width="100%"
+            height="200px"
           />
         </div>
         <div className={styles.output}>
@@ -95,6 +100,8 @@ export default function Editor(props) {
             showPrintMargin={false}
             highlightActiveLine={false}
             readOnly={true}
+            width="100%"
+            height="200px"
           />
         </div>
       </div>

@@ -1,6 +1,8 @@
 .container {
   height: 60px;
-  background: #efefef;
+  background: #202020;
+  border-bottom: 4px solid #101010;
+  color: #F8F8F2;
   display: flex;
   align-items: center;
 }

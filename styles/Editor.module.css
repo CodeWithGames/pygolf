@@ -7,32 +7,75 @@
 .container > div[id="code-editor"] {
   min-height: 200px;
   flex-grow: 1;
+  border-top: 4px solid #161616;
 }
 
 .toolbar {
+  text-align: center;
   min-height: 60px;
-  height: 60px;
+  /* height: 60px; */
+  display: flex;
+  flex-direction: column;
+  background: #272822;
+  color: #F8F8F2;
+}
+
+.toolbar > h1 {
+  margin: 0;
+}
+
+.toolbar > p {
+  color: #8F908A;
+  margin: 0;
+}
+
+.actions {
   display: flex;
   align-items: center;
+  justify-content: center;
+}
+
+.actions > p {
+  margin: 0;
+  width: 150px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.actions > button {
+  margin: 10px;
 }
 
 .console {
   height: 200px;
   display: flex;
+  border-top: 4px solid #161616;
 }
 
 .output {
   width: 50%;
   overflow: hidden;
-  border: 2px solid black;
-  background: #272822;
+}
+
+.output:first-of-type {
+  border-right: 2px solid #161616;
+}
+
+.output:last-of-type {
+  border-left: 2px solid #161616;
 }
 
 .output > h1 {
   text-align: center;
   margin: 0;
   padding: 5px;
-  background: #efefef;
+  background: #2F3129;
+  color: #F8F8F2;
+}
+
+.output .editor {
+
 }
 
 .output .editor div[class="ace_cursor"] {
