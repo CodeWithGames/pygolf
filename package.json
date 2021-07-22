@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@material-ui/core": "^4.12.2",
+    "@material-ui/icons": "^4.11.2",
     "firebase": "^8.7.1",
     "next": "11.0.1",
     "python-shell": "^3.0.0",
