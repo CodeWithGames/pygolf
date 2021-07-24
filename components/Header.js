@@ -3,14 +3,20 @@ import Image from 'next/image';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import Modal from '@material-ui/core/Modal';
 import GolfCourseIcon from '@material-ui/icons/GolfCourse';
+import PersonIcon from '@material-ui/icons/Person';
+import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
 
+import { useState } from 'react';
 import signInWithGoogle from '../util/signInWithGoogle.js';
 import firebase from 'firebase/app';
 
 import styles from '../styles/Header.module.css';
 
 export default function Header() {
+  const [profileOpen, setProfileOpen] = useState(false);
+
   return (
     <div className={styles.container}>
       <Link href="/">
@@ -38,12 +44,12 @@ export default function Header() {
       </Link>
       {
         firebase.auth().currentUser ?
-        <Tooltip title="Sign Out" arrow>
+        <Tooltip title="Profile" arrow>
           <IconButton
             className={styles.iconbutton}
-            onClick={() => firebase.auth().signOut()}
+            onClick={() => setProfileOpen(true)}
           >
-            <ExitToAppIcon />
+            <PersonIcon />
           </IconButton>
         </Tooltip> :
         <Tooltip title="Sign In" arrow>
@@ -51,10 +57,28 @@ export default function Header() {
             className={styles.iconbutton}
             onClick={signInWithGoogle}
           >
-            <GolfCourseIcon />
+            <PersonOutlineIcon />
           </IconButton>
         </Tooltip>
       }
+      <Modal
+        open={profileOpen}
+        onClose={() => setProfileOpen(false)}
+      >
+        <div className="modal">
+          <h1>Your Profile</h1>
+          <Tooltip title="Sign Out" arrow>
+            <IconButton
+              onClick={() => {
+                firebase.auth().signOut();
+                setProfileOpen(false);
+              }}
+            >
+              <ExitToAppIcon />
+            </IconButton>
+          </Tooltip>
+        </div>
+      </Modal>
     </div>
   );
 }

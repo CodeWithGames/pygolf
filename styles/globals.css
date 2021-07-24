@@ -27,3 +27,18 @@ a.url:hover {
 button {
   cursor: pointer;
 }
+
+.MuiIconButton-root {
+  color: #101010!important;
+}
+
+.modal {
+  background: #fff;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  height: 200px;
+  border: 2px solid #000;
+}
