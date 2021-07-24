@@ -1,7 +1,7 @@
 .container {
   height: 60px;
-  background: #F8F8F2;
-  color: #101010;
+  background: var(--white);
+  color: var(--black);
   display: flex;
   align-items: center;
 }

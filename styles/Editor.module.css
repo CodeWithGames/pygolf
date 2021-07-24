@@ -12,12 +12,12 @@
 
 .toolbar {
   text-align: center;
-  min-height: 60px;
-  /* height: 60px; */
+  min-height: 100px;
+  height: 100px;
   display: flex;
   flex-direction: column;
   background: #272822;
-  color: #F8F8F2;
+  color: var(--white);
 }
 
 .toolbar > h1 {
@@ -71,7 +71,7 @@
   margin: 0;
   padding: 5px;
   background: #2F3129;
-  color: #F8F8F2;
+  color: var(--white);
 }
 
 .output .editor {

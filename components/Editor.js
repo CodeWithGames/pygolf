@@ -85,7 +85,7 @@ export default function Editor(props) {
             highlightActiveLine={false}
             readOnly={true}
             width="100%"
-            height="200px"
+            height="148px"
           />
         </div>
         <div className={styles.output}>
@@ -101,7 +101,7 @@ export default function Editor(props) {
             highlightActiveLine={false}
             readOnly={true}
             width="100%"
-            height="200px"
+            height="148px"
           />
         </div>
       </div>
