@@ -7,20 +7,19 @@ export default function User() {
   const [userData, setUserData] = useState(undefined);
 
   const router = useRouter();
-  const { username } = router.query;
+  const { id } = router.query;
 
   // retrieves user data from firebase
   async function getUserData() {
     const usersRef = firebase.firestore().collection('users');
-    const snapshot = await usersRef.where('username', '==', username).get();
-    if (snapshot.docs.length) setUserData(snapshot.docs[0].data());
-    else setUserData(null);
+    const userDoc = await usersRef.doc(id).get();
+    setUserData(userDoc.exists ? userDoc.data() : null);
   }
 
   // retrieve user data on start
   useEffect(() => {
-    if (username) getUserData();
-  }, [username]);
+    if (id) getUserData();
+  }, [id]);
 
   if (userData === undefined) return <div>Loading...</div>;
   if (userData === null) return <div>User not found</div>;
