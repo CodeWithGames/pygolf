@@ -5,6 +5,7 @@ import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
 import { useAuthState } from 'react-firebase-hooks/auth';
+import { useDocumentData } from 'react-firebase-hooks/firestore';
 import { firebaseConfig } from '../firebaseConfig.js';
 
 import '../styles/globals.css';
@@ -17,6 +18,12 @@ if (!firebase.apps.length) {
 function App({ Component, pageProps }) {
   useAuthState(firebase.auth());
 
+  // retrieve user doc
+  const uid = firebase.auth().currentUser?.uid;
+  const usersRef = firebase.firestore().collection('users');
+  const userRef = usersRef.doc(uid ?? 'null');
+  const [userData] = useDocumentData(userRef);
+
   return (
     <>
       <Head>
@@ -28,7 +35,7 @@ function App({ Component, pageProps }) {
         <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;900&display=swap" rel="stylesheet" />
       </Head>
       <Header />
-      <Component {...pageProps} />
+      <Component {...pageProps} userData={userData} />
     </>
   );
 }

@@ -6,7 +6,7 @@ import firebase from 'firebase/app';
 
 import styles from '../styles/Create.module.css';
 
-export default function Create() {
+export default function Create(props) {
   const [step, setStep] = useState(0);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -19,11 +19,15 @@ export default function Create() {
     // clean up target
     const cleanTarget = target[target.length - 1] === '\n' ?
     target.slice(0, target.length - 1) : target;
-    // add doc in firebase
+    // get user data
     const uid = firebase.auth().currentUser.uid;
+    const userRef = firebase.firestore().collection('users').doc(uid);
+    const userDoc = await userRef.get();
+    const username = userDoc.data().username;
+    // add challenge doc in firebase
     const challengesRef = firebase.firestore().collection('challenges');
     const challengeRef = await challengesRef.add({
-      creator: uid,
+      creator: { uid, username },
       title: title,
       description: description,
       target: cleanTarget,
@@ -32,6 +36,8 @@ export default function Create() {
     // navigate to challenge page
     router.push(`/challenge/${challengeRef.id}`);
   }
+
+  if (!props.userData) return <div>This page requires auth</div>;
 
   return (
     <div className={styles.container}>
@@ -47,6 +53,8 @@ export default function Create() {
             id="input-title"
             value={title}
             onChange={e => setTitle(e.target.value)}
+            autoComplete="off"
+            maxLength="64"
             required
           />
           <label htmlFor="input-description">Description</label>
@@ -57,6 +65,7 @@ export default function Create() {
             onChange={e => setDescription(e.target.value)}
             cols={24}
             rows={4}
+            maxLength="1024"
             required
           />
           <div className={styles.buttonlist}>

@@ -1,6 +1,7 @@
+import Loading from '../../components/Loading.js';
+
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-
 import firebase from 'firebase/app';
 
 import dynamic from 'next/dynamic';
@@ -16,8 +17,7 @@ export default function Challenge() {
   async function getChallengeData() {
     const challengesRef = firebase.firestore().collection('challenges');
     const challengeDoc = await challengesRef.doc(id).get();
-    if (challengeDoc.exists) setChallengeData(challengeDoc.data());
-    else router.push('/challenges');
+    setChallengeData(challengeDoc.exists ? challengeDoc.data() : null);
   }
 
   // retrieve challenge data on start
@@ -25,7 +25,7 @@ export default function Challenge() {
     if (id) getChallengeData();
   }, [id]);
 
-  if (challengeData === undefined) return <div>Loading...</div>;
+  if (challengeData === undefined) return <Loading />;
   if (challengeData === null) return <div>Challenge not found</div>;
 
   return <Editor data={challengeData} />;
