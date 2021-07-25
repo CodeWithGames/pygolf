@@ -34,7 +34,7 @@ function App({ Component, pageProps }) {
         <link rel="manifest" href="/manifest.json" />
         <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;900&display=swap" rel="stylesheet" />
       </Head>
-      <Header />
+      <Header userData={userData} />
       <Component {...pageProps} userData={userData} />
     </>
   );

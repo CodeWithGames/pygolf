@@ -8,14 +8,29 @@ import GolfCourseIcon from '@material-ui/icons/GolfCourse';
 import PersonIcon from '@material-ui/icons/Person';
 import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import signInWithGoogle from '../util/signInWithGoogle.js';
 import firebase from 'firebase/app';
 
 import styles from '../styles/Header.module.css';
 
-export default function Header() {
+export default function Header(props) {
   const [profileOpen, setProfileOpen] = useState(false);
+  const [newUsername, setNewUsername] = useState('');
+
+  // updates username in firebase
+  async function changeUsername() {
+    const uid = firebase.auth().currentUser.uid;
+    const usersRef = firebase.firestore().collection('users');
+    const userRef = usersRef.doc(uid);
+    await userRef.update({ username: newUsername });
+    setProfileOpen(false);
+  }
+
+  // update new username when user data changes
+  useEffect(() => {
+    setNewUsername(props.userData?.username ?? '');
+  }, [props.userData])
 
   return (
     <div className={styles.container}>
@@ -77,6 +92,20 @@ export default function Header() {
               <ExitToAppIcon />
             </IconButton>
           </Tooltip>
+          <form onSubmit={e => {
+            e.preventDefault();
+            changeUsername();
+          }}>
+            <label htmlFor="input-username">Username</label>
+            <input
+              id="input-username"
+              value={newUsername}
+              onChange={e => setNewUsername(e.target.value)}
+              autoComplete="off"
+              required
+            />
+            <button>Change Username</button>
+          </form>
         </div>
       </Modal>
     </div>
