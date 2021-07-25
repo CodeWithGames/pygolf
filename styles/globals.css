@@ -1,6 +1,10 @@
 :root {
   --white: #F8F8F2;
   --black: #101010;
+  --blue: #2196f3;
+  --purple: #3f51b5;
+  --gray: #ddd;
+  --darkgray: #999;
 }
 
 * {
@@ -20,12 +24,16 @@ a {
 }
 
 a.url {
-  color: #2196f3;
+  color: var(--blue);
 }
 
 a.url:hover {
-  color: #3f51b5;
+  color: var(--purple);
   text-decoration: underline;
+}
+
+button, textarea, input {
+  font-family: 'Lato', sans-serif;
 }
 
 button {
@@ -51,4 +59,29 @@ textarea {
   height: 200px;
   border-radius: 5px;
   border: 2px solid var(--black);
+}
+
+.btn {
+  padding: 10px 20px;
+  border: 0;
+  border-radius: 2px;
+  transition: 0.25s;
+}
+
+.btn-primary {
+  background: var(--blue);
+  color: var(--white);
+}
+
+.btn-primary:hover {
+  background: var(--purple);
+}
+
+.btn-secondary {
+  background: var(--gray);
+  color: var(--black);
+}
+
+.btn-secondary:hover {
+  background: var(--darkgray);
 }
