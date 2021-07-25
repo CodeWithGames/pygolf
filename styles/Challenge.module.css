@@ -1,0 +1,39 @@
+.container {
+  border: 2px solid var(--black);
+  margin: 10px;
+  padding: 20px;
+  position: relative;
+  display: flex;
+  transition: 0.25s;
+  background: var(--white);
+  width: 400px;
+}
+
+.container:hover {
+  transform: scale(1.02);
+}
+
+.container h1 {
+  margin: 0;
+}
+
+.container p {
+  margin: 0;
+}
+
+.meta {
+  flex-grow: 1;
+}
+
+.star {
+  cursor: pointer;
+}
+
+.star > svg {
+  width: 32px;
+  height: 32px;
+}
+
+.staricon {
+  color: gold;
+}
