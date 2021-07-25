@@ -1,24 +1,29 @@
 import Link from 'next/link';
+import Loading from '../components/Loading.js';
+import Challenge from '../components/Challenge.js';
 
 import firebase from 'firebase/app';
-
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 
-export default function Challenges() {
-  const challengesRef = firebase.firestore().collection('challenges');
-  const [challenges] = useCollectionData(challengesRef, { idField: 'id' });
+import styles from '../styles/Challenges.module.css';
 
-  if (!challenges) return <div>Loading...</div>;
+export default function Challenges(props) {
+  const challengesRef = firebase.firestore().collection('challenges');
+  const [challenges] = useCollectionData(
+    challengesRef.orderBy('created', 'desc'), { idField: 'id' }
+  );
+
+  if (!challenges) return <Loading />;
 
   return (
-    <div>
+    <div className={styles.container}>
       {
         challenges.map(challenge =>
-          <div key={challenge.id}>
-            <Link href={`/challenge/${challenge.id}`}>
-              <a>{challenge.title}</a>
-            </Link>
-          </div>
+          <Challenge
+            key={challenge.id}
+            data={challenge}
+            userData={props.userData}
+          />
         )
       }
     </div>
