@@ -1,3 +1,5 @@
+import Button from '@material-ui/core/button';
+
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import firebase from 'firebase/app';
@@ -42,19 +44,24 @@ export default function Create() {
         }}>
           <label htmlFor="input-title">Title</label>
           <input
+            id="input-title"
             value={title}
             onChange={e => setTitle(e.target.value)}
             required
           />
           <label htmlFor="input-description">Description</label>
           <textarea
+            id="input-description"
             placeholder="What should the program do?"
             value={description}
             onChange={e => setDescription(e.target.value)}
+            cols={24}
             rows={4}
             required
           />
-          <button>Next</button>
+          <div className={styles.buttonlist}>
+            <button className="btn btn-secondary">Next</button>
+          </div>
         </form>
       }
       {
@@ -65,14 +72,28 @@ export default function Create() {
         }}>
           <label htmlFor="input-target">Target</label>
           <textarea
+            id="input-target"
             placeholder="What should the program output be?"
             value={target}
             onChange={e => setTarget(e.target.value)}
-            rows={16}
+            cols={48}
+            rows={8}
             required
           />
-          <button type="button" onClick={() => setStep(0)}>Back</button>
-          <button>Create</button>
+          <div className={styles.buttonlist}>
+            <button
+              type="button"
+              onClick={() => setStep(0)}
+              className="btn btn-secondary"
+            >
+              Back
+            </button>
+            <button
+              className="btn btn-primary"
+            >
+              Create
+            </button>
+          </div>
         </form>
       }
     </div>

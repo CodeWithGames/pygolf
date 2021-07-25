@@ -7,3 +7,20 @@
   flex-direction: column;
   align-items: center;
 }
+
+.container > form > label {
+  margin: 10px 0 2px 0;
+}
+
+.container > form > label:first-of-type {
+  margin-top: 0;
+}
+
+.buttonlist {
+  display: flex;
+  margin: 5px;
+}
+
+.buttonlist > button {
+  margin: 5px;
+}
