@@ -15,6 +15,8 @@ export default function Editor(props) {
 
   // runs given python code at shell endpoint
   async function runCode(inCode) {
+    // reset output
+    setOutput({ error: false, text: '...' });
     // request endpoint
     const res = await fetch(`/api/shell?code=${encodeURIComponent(inCode)}`);
     const data = await res.json();
@@ -27,7 +29,6 @@ export default function Editor(props) {
 
   // runs current code and puts result in output
   async function run() {
-    setOutput({ error: false, text: '' }); // reset output
     const out = await runCode(code); // run code
     setOutput(out); // set output
   }
@@ -54,9 +55,9 @@ export default function Editor(props) {
         <h1>{title}</h1>
         <p>{description}</p>
         <div className={styles.actions}>
-          <button onClick={run}>Run</button>
+          <button onClick={run} className="btn btn-secondary">Run</button>
           <p>{code.length} characters</p>
-          <button onClick={submit}>Submit</button>
+          <button onClick={submit} className="btn btn-primary">Submit</button>
         </div>
       </div>
       <AceEditor

@@ -4,35 +4,44 @@
   min-height: calc(100% - 60px);
 }
 
-.container > div[id="code-editor"] {
-  min-height: 200px;
-  flex-grow: 1;
-  border-top: 4px solid #161616;
-}
-
 .toolbar {
+  padding: 0 20px;
   text-align: center;
-  min-height: 100px;
-  height: 100px;
+  min-height: 140px;
+  height: 140px;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   background: #272822;
   color: var(--white);
 }
 
 .toolbar > h1 {
   margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .toolbar > p {
   color: #8F908A;
   margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.container > div[id="code-editor"] {
+  min-height: 200px;
+  flex-grow: 1;
+  border-top: 4px solid #161616;
 }
 
 .actions {
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-top: 10px;
 }
 
 .actions > p {
@@ -41,10 +50,7 @@
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
-}
-
-.actions > button {
-  margin: 10px;
+  margin: 0 10px;
 }
 
 .console {
@@ -70,7 +76,7 @@
   text-align: center;
   margin: 0;
   padding: 5px;
-  background: #2F3129;
+  background: #2f3129;
   color: var(--white);
 }
 
