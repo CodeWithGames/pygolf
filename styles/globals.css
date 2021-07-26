@@ -49,6 +49,7 @@ textarea {
 }
 
 .modal {
+  text-align: center;
   background: var(--white);
   color: var(--black);
   position: absolute;
@@ -58,6 +59,11 @@ textarea {
   width: 400px;
   height: 200px;
   border: 2px solid var(--black);
+  padding: 10px;
+}
+
+.modal > h1 {
+  margin: 0;
 }
 
 .btn {

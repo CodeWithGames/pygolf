@@ -80,8 +80,8 @@ export default function Header(props) {
         open={profileOpen}
         onClose={() => setProfileOpen(false)}
       >
-        <div className="modal">
-          <h1>Your Profile</h1>
+        <div className={`modal ${styles.modal}`}>
+          <h1>Profile</h1>
           <Tooltip title="Sign Out" arrow>
             <IconButton
               onClick={() => {
@@ -104,7 +104,9 @@ export default function Header(props) {
               autoComplete="off"
               required
             />
-            <button>Change Username</button>
+            <button className="btn btn-primary">
+              Update
+            </button>
           </form>
         </div>
       </Modal>
