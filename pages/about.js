@@ -1,9 +1,12 @@
 import Link from 'next/link';
 
+import styles from '../styles/About.module.css';
+
 export default function About() {
   return (
-    <div>
+    <div className={styles.container}>
       <h1>About</h1>
+      <hr />
       <h2>What is code golfing?</h2>
       <p>Code golfing is a competition in which a programming challenge is
       solved in the fewest number of characters.</p>
