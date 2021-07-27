@@ -48,6 +48,10 @@ textarea {
   color: var(--black)!important;
 }
 
+.MuiTabs-indicator {
+  background-color: var(--blue)!important;
+}
+
 .modal {
   text-align: center;
   background: var(--white);
