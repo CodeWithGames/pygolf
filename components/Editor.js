@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import AceEditor from 'react-ace';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -5,6 +6,7 @@ import Modal from '@material-ui/core/Modal';
 
 import firebase from 'firebase/app';
 import { useEffect, useState } from 'react';
+import { useCollectionData } from 'react-firebase-hooks/firestore';
 
 import 'ace-builds/src-noconflict/mode-python';
 import 'ace-builds/src-noconflict/mode-plain_text';
@@ -19,6 +21,16 @@ export default function Editor(props) {
   const [output, setOutput] = useState({ error: false, text: '' });
   const [running, setRunning] = useState(false);
   const [submission, setSubmission] = useState(undefined);
+
+  // get challenge doc
+  const challengesRef = firebase.firestore().collection('challenges');
+  const challengeRef = challengesRef.doc(id);
+
+  // get solutions
+  const solutionsRef = challengeRef.collection('solutions');
+  const [solutions] = useCollectionData(
+    solutionsRef.orderBy('length'), { idField: 'id' }
+  );
 
   // runs given python code at shell endpoint
   async function runCode(inCode) {
@@ -54,12 +66,14 @@ export default function Editor(props) {
   // submits current submission to leaderboard
   async function submitToLeaderboard() {
     // get reference to solution doc
-    const challengesRef = firebase.firestore().collection('challenges');
-    const challengeRef = challengesRef.doc(id);
     const uid = firebase.auth().currentUser.uid;
-    const solutionRef = challengeRef.collection('solutions').doc(uid);
+    const solutionRef = solutionsRef.doc(uid);
     // set solution doc
-    await solutionRef.set({ text: submission, length: submission.length });
+    await solutionRef.set({
+      text: submission,
+      length: submission.length,
+      submitted: new Date()
+    });
     setSubmission(undefined);
     setTab(1);
   }
@@ -149,7 +163,21 @@ export default function Editor(props) {
       }
       {
         tab === 1 &&
-        <h1>Leaderboard</h1>
+        <>
+          <h1>Leaderboard</h1>
+          {
+            solutions &&
+            solutions.map(solution =>
+              <div className={styles.solution} key={solution.id}>
+                <Link href={`/user/${solution.id}`}>
+                  <a className="url">@{solution.id}</a>
+                </Link>
+                <span>•</span>
+                <p>{solution.length} characters</p>
+              </div>
+            )
+          }
+        </>
       }
     </div>
   );

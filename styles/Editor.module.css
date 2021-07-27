@@ -90,3 +90,12 @@
 .errortext {
   color: red;
 }
+
+.solution {
+  display: flex;
+  align-items: center;
+}
+
+.solution > span {
+  margin: 0 5px;
+}
