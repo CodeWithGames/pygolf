@@ -93,17 +93,22 @@ export default function Challenge(props) {
                 open={editing}
                 onClose={() => setEditing(false)}
               >
-                <div className="modal">
+                <div className={`modal ${styles.modal}`}>
+                  <h1>Editing Challenge</h1>
                   <form onSubmit={e => {
                     e.preventDefault();
                     updateChallenge();
                   }}>
+                    <label id="input-newtitle">Title</label>
                     <input
+                      id="input-newtitle"
                       value={newTitle}
                       onChange={e => setNewTitle(e.target.value)}
                       required
                     />
+                    <label id="input-newdescription">Description</label>
                     <input
+                      id="input-newdescription"
                       value={newDescription}
                       onChange={e => setNewDescription(e.target.value)}
                       required
