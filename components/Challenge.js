@@ -7,14 +7,16 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Modal from '@material-ui/core/Modal';
 import Link from 'next/link';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import firebase from 'firebase/app';
+import getUsername from '../util/getUsername.js';
 
 import styles from '../styles/Challenge.module.css';
 
 export default function Challenge(props) {
   const { id, title, description, creator, created, stars } = props.data;
 
+  const [username, setUsername] = useState('');
   const [editing, setEditing] = useState(false);
   const [newTitle, setNewTitle] = useState(title);
   const [newDescription, setNewDescription] = useState(description);
@@ -50,6 +52,11 @@ export default function Challenge(props) {
     await challengeRef.delete();
   }
 
+  // get username on start
+  useEffect(() => {
+    getUsername(creator).then(u => setUsername(u));
+  }, []);
+
   return (
     <div className={styles.container}>
       <div className={styles.meta}>
@@ -60,7 +67,7 @@ export default function Challenge(props) {
           </a>
         </Link>
         <Link href={`/user/${creator}`}>
-          <a className="url">@{creator}</a>
+          <a className="url">@{username}</a>
         </Link>
       </div>
       {
