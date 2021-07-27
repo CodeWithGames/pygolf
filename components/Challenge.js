@@ -1,6 +1,9 @@
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 import StarIcon from '@material-ui/icons/Star';
 import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
+import IconButton from '@material-ui/core/IconButton';
+import Tooltip from '@material-ui/core/Tooltip';
 import Modal from '@material-ui/core/Modal';
 import Link from 'next/link';
 
@@ -38,6 +41,13 @@ export default function Challenge(props) {
       description: newDescription
     });
     setEditing(false);
+  }
+
+  // deletes challenge in firebase
+  async function deleteChallenge() {
+    const message = `Delete ${title}? This action is irreversible.`;
+    if (!window.confirm(message)) return;
+    await challengeRef.delete();
   }
 
   return (
@@ -90,6 +100,11 @@ export default function Challenge(props) {
                     />
                     <button className="btn btn-primary">Update</button>
                   </form>
+                  <Tooltip title="Delete" arrow>
+                    <IconButton onClick={deleteChallenge}>
+                      <DeleteIcon />
+                    </IconButton>
+                  </Tooltip>
                 </div>
               </Modal>
             </>
