@@ -1,7 +1,10 @@
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 import StarIcon from '@material-ui/icons/Star';
+import EditIcon from '@material-ui/icons/Edit';
+import Modal from '@material-ui/core/Modal';
 import Link from 'next/link';
 
+import { useState } from 'react';
 import firebase from 'firebase/app';
 
 import styles from '../styles/Challenge.module.css';
@@ -9,7 +12,13 @@ import styles from '../styles/Challenge.module.css';
 export default function Challenge(props) {
   const { id, title, description, creator, created, stars } = props.data;
 
+  const [editing, setEditing] = useState(false);
+  const [newTitle, setNewTitle] = useState(title);
+  const [newDescription, setNewDescription] = useState(description);
+
   const uid = firebase.auth().currentUser?.uid;
+
+  const challengeRef = firebase.firestore().collection('challenges').doc(id);
 
   // toggles star status of challenge
   async function toggleStar() {
@@ -19,8 +28,16 @@ export default function Challenge(props) {
     firebase.firestore.FieldValue.arrayRemove(uid) :
     firebase.firestore.FieldValue.arrayUnion(uid);
     // update challenge doc in firebase
-    const challengeRef = firebase.firestore().collection('challenges').doc(id);
     await challengeRef.update({ stars: starStatus });
+  }
+
+  // updates challenge in firebase
+  async function updateChallenge() {
+    await challengeRef.update({
+      title: newTitle,
+      description: newDescription
+    });
+    setEditing(false);
   }
 
   return (
@@ -46,6 +63,37 @@ export default function Challenge(props) {
               <StarBorderIcon />
             }
           </div>
+          {
+            creator === firebase.auth().currentUser.uid &&
+            <>
+              <button onClick={() => setEditing(true)}>
+                <EditIcon />
+              </button>
+              <Modal
+                open={editing}
+                onClose={() => setEditing(false)}
+              >
+                <div className="modal">
+                  <form onSubmit={e => {
+                    e.preventDefault();
+                    updateChallenge();
+                  }}>
+                    <input
+                      value={newTitle}
+                      onChange={e => setNewTitle(e.target.value)}
+                      required
+                    />
+                    <input
+                      value={newDescription}
+                      onChange={e => setNewDescription(e.target.value)}
+                      required
+                    />
+                    <button className="btn btn-primary">Update</button>
+                  </form>
+                </div>
+              </Modal>
+            </>
+          }
         </div>
       }
     </div>
