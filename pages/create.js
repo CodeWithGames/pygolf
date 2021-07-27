@@ -28,7 +28,8 @@ export default function Create(props) {
       title: title,
       description: description,
       target: cleanTarget,
-      created: new Date()
+      created: new Date(),
+      stars: []
     });
     // navigate to challenge page
     router.push(`/challenge/${challengeRef.id}`);

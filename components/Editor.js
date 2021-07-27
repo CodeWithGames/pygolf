@@ -167,6 +167,7 @@ export default function Editor(props) {
           <h1>Leaderboard</h1>
           {
             solutions &&
+            solutions.length ?
             solutions.map(solution =>
               <div className={styles.solution} key={solution.id}>
                 <Link href={`/user/${solution.id}`}>
@@ -175,7 +176,8 @@ export default function Editor(props) {
                 <span>•</span>
                 <p>{solution.length} characters</p>
               </div>
-            )
+            ) :
+            <p>No solutions yet. Be the first!</p>
           }
         </>
       }

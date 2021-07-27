@@ -37,3 +37,11 @@
 .staricon {
   color: gold;
 }
+
+.editbutton {
+  border: 0;
+  background: transparent;
+  padding: 0 3px;
+  float: bottom;
+  margin: 0;
+}

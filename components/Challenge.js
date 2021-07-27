@@ -83,7 +83,10 @@ export default function Challenge(props) {
           {
             creator === firebase.auth().currentUser.uid &&
             <>
-              <button onClick={() => setEditing(true)}>
+              <button
+                onClick={() => setEditing(true)}
+                className={styles.editbutton}
+              >
                 <EditIcon />
               </button>
               <Modal
