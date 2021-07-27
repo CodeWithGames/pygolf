@@ -91,11 +91,8 @@
   color: red;
 }
 
-.solution {
+.solutionlist {
   display: flex;
+  flex-direction: column;
   align-items: center;
-}
-
-.solution > span {
-  margin: 0 5px;
 }

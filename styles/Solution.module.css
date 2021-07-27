@@ -1,0 +1,17 @@
+.container {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--black);
+  padding: 0 10px;
+  background: var(--white);
+  margin: 10px;
+  transition: 0.25s;
+}
+
+.container:hover {
+  transform: scale(1.01);
+}
+
+.container > span {
+  margin: 0 5px;
+}

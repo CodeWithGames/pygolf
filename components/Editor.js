@@ -169,9 +169,13 @@ export default function Editor(props) {
           {
             solutions &&
             solutions.length ?
-            solutions.map(solution =>
-              <Solution data={solution} key={solution.id} />
-            ) :
+            <div className={styles.solutionlist}>
+              {
+                solutions.map(solution =>
+                  <Solution data={solution} key={solution.id} />
+                )
+              }
+            </div> :
             <p>No solutions yet. Be the first!</p>
           }
         </>
