@@ -7,18 +7,20 @@ import firebase from 'firebase/app';
 import styles from '../styles/Challenge.module.css';
 
 export default function Challenge(props) {
-  const { id, title, description, creator, created } = props.data;
+  const { id, title, description, creator, created, stars } = props.data;
+
+  const uid = firebase.auth().currentUser?.uid;
 
   // toggles star status of challenge
   async function toggleStar() {
-    const starred = props.userData.stars.includes(id);
-    // update user doc in firebase
-    const uid = firebase.auth().currentUser.uid;
-    const userRef = firebase.firestore().collection('users').doc(uid);
-    const stars = starred ?
-    firebase.firestore.FieldValue.arrayRemove(id) :
-    firebase.firestore.FieldValue.arrayUnion(id);
-    await userRef.update({ stars });
+    // get starred status
+    const starred = stars.includes(uid);
+    const starStatus = starred ?
+    firebase.firestore.FieldValue.arrayRemove(uid) :
+    firebase.firestore.FieldValue.arrayUnion(uid);
+    // update challenge doc in firebase
+    const challengeRef = firebase.firestore().collection('challenges').doc(id);
+    await challengeRef.update({ stars: starStatus });
   }
 
   return (
@@ -30,16 +32,16 @@ export default function Challenge(props) {
             <p>{description}</p>
           </a>
         </Link>
-        <Link href={`/user/${creator.uid}`}>
-          <a className="url">@{creator.username}</a>
+        <Link href={`/user/${creator}`}>
+          <a className="url">@{creator}</a>
         </Link>
       </div>
       {
-        props.userData &&
+        firebase.auth().currentUser &&
         <div>
           <div onClick={toggleStar} className={styles.star}>
             {
-              props.userData.stars.includes(id) ?
+              stars.includes(uid) ?
               <StarIcon className={styles.staricon} /> :
               <StarBorderIcon />
             }

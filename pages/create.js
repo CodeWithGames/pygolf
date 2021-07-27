@@ -21,13 +21,10 @@ export default function Create(props) {
     target.slice(0, target.length - 1) : target;
     // get user data
     const uid = firebase.auth().currentUser.uid;
-    const userRef = firebase.firestore().collection('users').doc(uid);
-    const userDoc = await userRef.get();
-    const username = userDoc.data().username;
     // add challenge doc in firebase
     const challengesRef = firebase.firestore().collection('challenges');
     const challengeRef = await challengesRef.add({
-      creator: { uid, username },
+      creator: uid,
       title: title,
       description: description,
       target: cleanTarget,

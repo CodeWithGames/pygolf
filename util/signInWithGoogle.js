@@ -13,8 +13,7 @@ async function createUserDoc() {
     // create user doc
     userRef.set({
       username: uid.slice(0, 16),
-      joined: new Date(),
-      stars: []
+      joined: new Date()
     });
   }
 }
