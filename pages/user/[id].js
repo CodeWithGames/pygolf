@@ -2,9 +2,10 @@ import Challenge from '../../components/Challenge.js';
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-
 import firebase from 'firebase/app';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
+
+import styles from '../../styles/User.module.css';
 
 export default function User() {
   const [userData, setUserData] = useState(undefined);
@@ -38,14 +39,17 @@ export default function User() {
   if (userData === null) return <div>User not found</div>;
 
   return (
-    <div>
+    <div className={styles.container}>
       <h1>{userData.username}</h1>
-      {
-        userChallenges &&
-        userChallenges.map(challenge =>
-          <Challenge data={challenge} key={challenge.id} />
-        )
-      }
+      <hr />
+      <div className={styles.challengelist}>
+        {
+          userChallenges &&
+          userChallenges.map(challenge =>
+            <Challenge data={challenge} key={challenge.id} />
+          )
+        }
+      </div>
     </div>
   );
 }
