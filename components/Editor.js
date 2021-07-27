@@ -3,6 +3,7 @@ import AceEditor from 'react-ace';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Modal from '@material-ui/core/Modal';
+import Solution from './Solution.js';
 
 import firebase from 'firebase/app';
 import { useEffect, useState } from 'react';
@@ -169,13 +170,7 @@ export default function Editor(props) {
             solutions &&
             solutions.length ?
             solutions.map(solution =>
-              <div className={styles.solution} key={solution.id}>
-                <Link href={`/user/${solution.id}`}>
-                  <a className="url">@{solution.id}</a>
-                </Link>
-                <span>•</span>
-                <p>{solution.length} characters</p>
-              </div>
+              <Solution data={solution} key={solution.id} />
             ) :
             <p>No solutions yet. Be the first!</p>
           }
