@@ -1,5 +1,8 @@
-import { useEffect, useState } from 'react';
 import AceEditor from 'react-ace';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+
+import { useEffect, useState } from 'react';
 
 import 'ace-builds/src-noconflict/mode-python';
 import 'ace-builds/src-noconflict/mode-plain_text';
@@ -9,6 +12,7 @@ import styles from '../styles/Editor.module.css';
 export default function Editor(props) {
   const { title, description, target } = props.data;
 
+  const [tab, setTab] = useState(0);
   const [code, setCode] = useState('');
   const [output, setOutput] = useState({ error: false, text: '' });
   const [running, setRunning] = useState(false);
@@ -51,61 +55,74 @@ export default function Editor(props) {
 
   return (
     <div className={styles.container}>
-      <div className={styles.toolbar}>
-        <h1>{title}</h1>
-        <p>{description}</p>
-        <div className={styles.actions}>
-          <button onClick={run} className="btn btn-secondary">Run</button>
-          <p>{code.length} characters</p>
-          <button onClick={submit} className="btn btn-primary">Submit</button>
-        </div>
-      </div>
-      <AceEditor
-        name="code-editor"
-        value={code}
-        onChange={val => setCode(val)}
-        mode="python"
-        theme="monokai"
-        wrapEnabled={true}
-        showPrintMargin={false}
-        readOnly={running}
-        width="100%"
-        height="auto"
-      />
-      <div className={styles.console}>
-        <div className={styles.output}>
-          <h1>Output</h1>
+      <Tabs value={tab} onChange={(e, val) => setTab(val)}>
+        <Tab label="Editor" />
+        <Tab label="Leaderboard" />
+      </Tabs>
+      {
+        tab === 0 &&
+        <>
+          <div className={styles.toolbar}>
+            <h1>{title}</h1>
+            <p>{description}</p>
+            <div className={styles.actions}>
+              <button onClick={run} className="btn btn-secondary">Run</button>
+              <p>{code.length} characters</p>
+              <button onClick={submit} className="btn btn-primary">Submit</button>
+            </div>
+          </div>
           <AceEditor
-            name="output-editor"
-            className={styles.editor}
-            value={output.text}
-            mode="plain_text"
+            name="code-editor"
+            value={code}
+            onChange={val => setCode(val)}
+            mode="python"
             theme="monokai"
             wrapEnabled={true}
             showPrintMargin={false}
-            highlightActiveLine={false}
-            readOnly={true}
+            readOnly={running}
             width="100%"
-            height="148px"
+            height="auto"
           />
-        </div>
-        <div className={styles.output}>
-          <h1>Target</h1>
-          <AceEditor
-            name="target-editor"
-            className={styles.editor}
-            value={target}
-            mode="plain_text"
-            theme="monokai"
-            wrapEnabled={true}
-            showPrintMargin={false}
-            highlightActiveLine={false}
-            readOnly={true}
-            width="100%"
-            height="148px"
-          />
-        </div>
-      </div>
+          <div className={styles.console}>
+            <div className={styles.output}>
+              <h1>Output</h1>
+              <AceEditor
+                name="output-editor"
+                className={styles.editor}
+                value={output.text}
+                mode="plain_text"
+                theme="monokai"
+                wrapEnabled={true}
+                showPrintMargin={false}
+                highlightActiveLine={false}
+                readOnly={true}
+                width="100%"
+                height="148px"
+              />
+            </div>
+            <div className={styles.output}>
+              <h1>Target</h1>
+              <AceEditor
+                name="target-editor"
+                className={styles.editor}
+                value={target}
+                mode="plain_text"
+                theme="monokai"
+                wrapEnabled={true}
+                showPrintMargin={false}
+                highlightActiveLine={false}
+                readOnly={true}
+                width="100%"
+                height="148px"
+              />
+            </div>
+          </div>
+        </>
+      }
+      {
+        tab === 1 &&
+        <h1>Leaderboard</h1>
+      }
     </div>
   );
 }
