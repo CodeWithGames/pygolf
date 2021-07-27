@@ -83,10 +83,6 @@
   color: var(--white);
 }
 
-.output .editor {
-
-}
-
 .output .editor div[class="ace_cursor"] {
   display: none!important;
 }

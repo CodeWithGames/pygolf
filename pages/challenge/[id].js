@@ -17,7 +17,9 @@ export default function Challenge() {
   async function getChallengeData() {
     const challengesRef = firebase.firestore().collection('challenges');
     const challengeDoc = await challengesRef.doc(id).get();
-    setChallengeData(challengeDoc.exists ? challengeDoc.data() : null);
+    setChallengeData(
+      challengeDoc.exists ? { id, ...challengeDoc.data() } : null
+    );
   }
 
   // retrieve challenge data on start

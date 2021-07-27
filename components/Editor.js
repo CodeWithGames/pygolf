@@ -1,7 +1,9 @@
 import AceEditor from 'react-ace';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
+import Modal from '@material-ui/core/Modal';
 
+import firebase from 'firebase/app';
 import { useEffect, useState } from 'react';
 
 import 'ace-builds/src-noconflict/mode-python';
@@ -10,12 +12,13 @@ import 'ace-builds/src-noconflict/theme-monokai';
 import styles from '../styles/Editor.module.css';
 
 export default function Editor(props) {
-  const { title, description, target } = props.data;
+  const { title, description, target, id } = props.data;
 
   const [tab, setTab] = useState(0);
   const [code, setCode] = useState('');
   const [output, setOutput] = useState({ error: false, text: '' });
   const [running, setRunning] = useState(false);
+  const [submission, setSubmission] = useState(undefined);
 
   // runs given python code at shell endpoint
   async function runCode(inCode) {
@@ -43,14 +46,22 @@ export default function Editor(props) {
     const inCode = code;
     const out = await runCode(inCode);
     setOutput(out);
-    // log output
-    if (out.error) console.log(`error: ${out.text}`)
-    else if (out.text !== target) console.log('output did not match target');
-    else {
-      console.log(`passed with ${inCode.length} characters:`);
-      console.log(inCode);
-    }
+    // if no error and target matched, set submission
+    if (!out.error && out.text === target) setSubmission(inCode);
     setRunning(false);
+  }
+
+  // submits current submission to leaderboard
+  async function submitToLeaderboard() {
+    // get reference to solution doc
+    const challengesRef = firebase.firestore().collection('challenges');
+    const challengeRef = challengesRef.doc(id);
+    const uid = firebase.auth().currentUser.uid;
+    const solutionRef = challengeRef.collection('solutions').doc(uid);
+    // set solution doc
+    await solutionRef.set({ text: submission, length: submission.length });
+    setSubmission(undefined);
+    setTab(1);
   }
 
   return (
@@ -68,7 +79,9 @@ export default function Editor(props) {
             <div className={styles.actions}>
               <button onClick={run} className="btn btn-secondary">Run</button>
               <p>{code.length} characters</p>
-              <button onClick={submit} className="btn btn-primary">Submit</button>
+              <button onClick={submit} className="btn btn-primary">
+                Submit
+                </button>
             </div>
           </div>
           <AceEditor
@@ -117,6 +130,21 @@ export default function Editor(props) {
               />
             </div>
           </div>
+          <Modal
+            open={!!submission}
+            onClose={() => setSubmission(undefined)}
+          >
+            <div className="modal">
+              <h1>Solved</h1>
+              <p>Completed in {submission?.length} characters</p>
+              <button
+                className="btn btn-primary"
+                onClick={submitToLeaderboard}
+              >
+                Submit to Leaderboard
+              </button>
+            </div>
+          </Modal>
         </>
       }
       {
