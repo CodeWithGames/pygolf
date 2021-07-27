@@ -1,13 +1,26 @@
+import Challenge from '../../components/Challenge.js';
+
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 
 import firebase from 'firebase/app';
+import { useCollectionData } from 'react-firebase-hooks/firestore';
 
 export default function User() {
   const [userData, setUserData] = useState(undefined);
 
+  // retrieve user id from router
   const router = useRouter();
   const { id } = router.query;
+
+  // retrieve user challenges
+  const challengesRef = firebase.firestore().collection('challenges');
+  const [userChallenges] = useCollectionData(
+    challengesRef
+    .where('creator', '==', id ?? 'null')
+    .orderBy('created', 'desc'),
+    { idField: 'id' }
+  );
 
   // retrieves user data from firebase
   async function getUserData() {
@@ -27,6 +40,12 @@ export default function User() {
   return (
     <div>
       <h1>{userData.username}</h1>
+      {
+        userChallenges &&
+        userChallenges.map(challenge =>
+          <Challenge data={challenge} key={challenge.id} />
+        )
+      }
     </div>
   );
 }
