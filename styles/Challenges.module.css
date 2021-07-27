@@ -1,6 +1,13 @@
 .container {
+  margin: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.challengelist {
+  margin-top: 10px;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  margin: 10px;
 }
