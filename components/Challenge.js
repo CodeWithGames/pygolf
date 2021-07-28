@@ -33,7 +33,10 @@ export default function Challenge(props) {
     firebase.firestore.FieldValue.arrayRemove(uid) :
     firebase.firestore.FieldValue.arrayUnion(uid);
     // update challenge doc in firebase
-    await challengeRef.update({ stars: starStatus });
+    await challengeRef.update({
+      stars: starStatus,
+      starCount: starred ? stars.length - 1 : stars.length + 1
+    });
   }
 
   // updates challenge in firebase
@@ -69,6 +72,7 @@ export default function Challenge(props) {
         <Link href={`/user/${creator}`}>
           <a className="url">@{username}</a>
         </Link>
+        <p>{stars.length} star{stars.length !== 1 && 's'}</p>
       </div>
       {
         firebase.auth().currentUser &&

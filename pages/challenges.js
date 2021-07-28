@@ -12,22 +12,23 @@ import styles from '../styles/Challenges.module.css';
 
 export default function Challenges(props) {
   const [tab, setTab] = useState(0);
+  const [sortBy, setSortBy] = useState('created');
 
   // retrieve all challenges
   const challengesRef = firebase.firestore().collection('challenges');
   const [challenges] = useCollectionData(
-    challengesRef.orderBy('created', 'desc'), { idField: 'id' }
+    challengesRef.orderBy(sortBy, 'desc'), { idField: 'id' }
   );
   // retrieve user challenges
   const uid = firebase.auth().currentUser?.uid;
   const [userChallenges] = useCollectionData(
     challengesRef.where('creator', '==', uid ?? 'null')
-    .orderBy('created', 'desc'), { idField: 'id' }
+    .orderBy(sortBy, 'desc'), { idField: 'id' }
   );
   // retrieve starred challenges
   const [starredChallenges] = useCollectionData(
     challengesRef.where('stars', 'array-contains', uid ?? 'null')
-    .orderBy('created', 'desc'), { idField: 'id' }
+    .orderBy(sortBy, 'desc'), { idField: 'id' }
   );
 
   return (
@@ -37,6 +38,13 @@ export default function Challenges(props) {
         {firebase.auth().currentUser && <Tab label="Your Challenges" />}
         {firebase.auth().currentUser && <Tab label="Starred Challenges" />}
       </Tabs>
+      <div className={styles.options}>
+        Sort by{' '}
+        <select value={sortBy} onChange={e => setSortBy(e.target.value)}>
+          <option value="created">Date</option>
+          <option value="starCount">Stars</option>
+        </select>
+      </div>
       <div className={styles.challengelist}>
         {
           (tab === 0 && challenges) &&
