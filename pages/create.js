@@ -3,8 +3,11 @@ import Button from '@material-ui/core/button';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import firebase from 'firebase/app';
+import { useCollectionData } from 'react-firebase-hooks/firestore';
 
 import styles from '../styles/Create.module.css';
+
+const challengeLimit = 10;
 
 export default function Create(props) {
   const [step, setStep] = useState(0);
@@ -16,13 +19,20 @@ export default function Create(props) {
 
   // creates a challenge
   async function createChallenge() {
+    // retrieve user challenges
+    const challengesRef = firebase.firestore().collection('challenges');
+    const uid = firebase.auth().currentUser?.uid;
+    const challengesQuery = challengesRef.where('creator', '==', uid ?? 'null');
+    const userChallenges = await challengesQuery.get();
+    // if challenge limit exceeded, return
+    if (userChallenges.docs.length >= challengeLimit) {
+      alert('Challenge limit reached. Delete an existing challenge to create more.');
+      return;
+    }
     // clean up target
     const cleanTarget = target[target.length - 1] === '\n' ?
     target.slice(0, target.length - 1) : target;
-    // get user data
-    const uid = firebase.auth().currentUser.uid;
     // add challenge doc in firebase
-    const challengesRef = firebase.firestore().collection('challenges');
     const challengeRef = await challengesRef.add({
       creator: uid,
       title: title,
