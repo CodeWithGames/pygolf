@@ -4,7 +4,7 @@ import Modal from '@material-ui/core/Modal';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import firebase from 'firebase/app';
-import { useCollectionData } from 'react-firebase-hooks/firestore';
+import { useCollectionData, useDocument } from 'react-firebase-hooks/firestore';
 
 import styles from '../../styles/User.module.css';
 
@@ -16,6 +16,10 @@ export default function User(props) {
   // retrieve user id from router
   const router = useRouter();
   const { id } = router.query;
+
+  // retrieve user doc
+  const usersRef = firebase.firestore().collection('users');
+  const [userDoc] = useDocument(usersRef.doc(id));
 
   // retrieve user challenges
   const challengesRef = firebase.firestore().collection('challenges');
@@ -29,23 +33,10 @@ export default function User(props) {
   // updates username in firebase
   async function changeUsername() {
     const uid = firebase.auth().currentUser.uid;
-    const usersRef = firebase.firestore().collection('users');
     const userRef = usersRef.doc(uid);
     await userRef.update({ username: newUsername });
     setEditing(false);
   }
-
-  // retrieves user data from firebase
-  async function getUserData() {
-    const usersRef = firebase.firestore().collection('users');
-    const userDoc = await usersRef.doc(id).get();
-    setUserData(userDoc.exists ? userDoc.data() : null);
-  }
-
-  // retrieve user data on start
-  useEffect(() => {
-    if (id) getUserData();
-  }, [id]);
 
   // update new username when user data changes
   useEffect(() => {
@@ -53,8 +44,8 @@ export default function User(props) {
   }, [props.userData])
 
   // return without user data
-  if (userData === undefined) return <div>Loading...</div>;
-  if (userData === null) return <div>User not found</div>;
+  if (userDoc === undefined) return <div>Loading...</div>;
+  if (!userDoc.exists) return <div>User not found</div>;
 
   return (
     <div className={styles.container}>
@@ -65,7 +56,7 @@ export default function User(props) {
             className={styles.username}
             onClick={() => setEditing(true)}
           >
-            {userData.username}
+            {userDoc.data().username}
           </h1>
           <Modal
             open={editing}
@@ -90,10 +81,10 @@ export default function User(props) {
             </div>
           </Modal>
         </> :
-        <h1>{userData.username}</h1>
+        <h1>{userDoc.data().username}</h1>
       }
       <hr />
-      <p>Joined {userData.joined.toDate().toLocaleDateString()}</p>
+      <p>Joined {userDoc.data().joined.toDate().toLocaleDateString()}</p>
       {
         userChallenges &&
         <>
