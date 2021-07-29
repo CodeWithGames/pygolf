@@ -93,6 +93,17 @@ export default function User(props) {
         <h1>{userData.username}</h1>
       }
       <hr />
+      <p>Joined {userData.joined.toDate().toLocaleDateString()}</p>
+      {
+        userChallenges &&
+        <>
+          <p>{userChallenges.length} challenges</p>
+          <p>
+            {userChallenges.reduce((acc, val) => acc + val.starCount, 0)}
+            {' '}stars
+          </p>
+        </>
+      }
       <div className={styles.challengelist}>
         {
           userChallenges &&
