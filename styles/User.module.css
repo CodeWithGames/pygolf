@@ -2,10 +2,17 @@
   padding: 0 20px;
   max-width: 800px;
   margin: 0 auto;
+  text-align: center;
 }
 
 .container > h1 {
-  text-align: center;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.username {
+  cursor: pointer;
 }
 
 .challengelist {
@@ -13,4 +20,22 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+}
+
+.modal {
+  height: 210px;
+}
+
+.modal > form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.modal > form > label {
+  margin-bottom: 2px;
+}
+
+.modal > form > button {
+  margin-top: 10px;
 }
