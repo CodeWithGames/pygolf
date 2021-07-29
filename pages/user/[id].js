@@ -1,4 +1,5 @@
 import Challenge from '../../components/Challenge.js';
+import Modal from '@material-ui/core/Modal';
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
@@ -7,8 +8,10 @@ import { useCollectionData } from 'react-firebase-hooks/firestore';
 
 import styles from '../../styles/User.module.css';
 
-export default function User() {
+export default function User(props) {
   const [userData, setUserData] = useState(undefined);
+  const [editing, setEditing] = useState('');
+  const [newUsername, setNewUsername] = useState('');
 
   // retrieve user id from router
   const router = useRouter();
@@ -23,6 +26,15 @@ export default function User() {
     { idField: 'id' }
   );
 
+  // updates username in firebase
+  async function changeUsername() {
+    const uid = firebase.auth().currentUser.uid;
+    const usersRef = firebase.firestore().collection('users');
+    const userRef = usersRef.doc(uid);
+    await userRef.update({ username: newUsername });
+    setEditing(false);
+  }
+
   // retrieves user data from firebase
   async function getUserData() {
     const usersRef = firebase.firestore().collection('users');
@@ -35,6 +47,12 @@ export default function User() {
     if (id) getUserData();
   }, [id]);
 
+  // update new username when user data changes
+  useEffect(() => {
+    setNewUsername(props.userData?.username ?? '');
+  }, [props.userData])
+
+  // return without user data
   if (userData === undefined) return <div>Loading...</div>;
   if (userData === null) return <div>User not found</div>;
 
