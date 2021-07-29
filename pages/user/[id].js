@@ -40,7 +40,40 @@ export default function User() {
 
   return (
     <div className={styles.container}>
-      <h1>{userData.username}</h1>
+      {
+        firebase.auth().currentUser?.uid === id ?
+        <>
+          <h1
+            className={styles.username}
+            onClick={() => setEditing(true)}
+          >
+            {userData.username}
+          </h1>
+          <Modal
+            open={editing}
+            onClose={() => setEditing(false)}
+          >
+            <div className={`modal ${styles.modal}`}>
+              <h1>Username</h1>
+              <form onSubmit={e => {
+                e.preventDefault();
+                changeUsername();
+              }}>
+                <input
+                  value={newUsername}
+                  onChange={e => setNewUsername(e.target.value)}
+                  autoComplete="off"
+                  required
+                />
+                <button className="btn btn-primary">
+                  Update
+                </button>
+              </form>
+            </div>
+          </Modal>
+        </> :
+        <h1>{userData.username}</h1>
+      }
       <hr />
       <div className={styles.challengelist}>
         {
